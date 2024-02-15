@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <py-env>
+        - numpy
+        - matplotlib
+    </py-env>
+</head>
+
+<body>
+    <label for="Upload a File"></label>
+    <input type="file" id="file-upload">
+
+    <div id="plot"></div>
+
+    <py-script output="plot">
+
+from js import document, window, Uint8Array
+from pyodide.ffi.wrappers import add_event_listener
+
+async def upload_file_and_show(e):
+    file_list = e.target.files
+    first_item = file_list.item(0)
+
+    my_bytes: bytes = await get_bytes_from_file(first_item)
+    print(my_bytes[:10]) # Do something with file contents
+
+async def get_bytes_from_file(file):
+    array_buf = await file.arrayBuffer()
+    return array_buf.to_bytes()
+
+add_event_listener(document.getElementById("file-upload"), "change", upload_file_and_show)
+        <!-- import matplotlib.pyplot as plt -->
+        <!-- import numpy as np -->
+        <!---->
+        <!-- x = np.random.randn(1000) -->
+        <!-- y = np.random.randn(1000) -->
+        <!---->
+        <!-- fig, ax = plt.subplots() -->
+        <!-- ax.scatter(x, y) -->
+        <!-- fig -->
+    </py-script>
+
+</body>
+
+</html>
