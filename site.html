@@ -48,6 +48,15 @@
 <button onclick="sendSerialLine()" style="width:45px">Send</button>
 <button onclick="sendCharacterNumber()" style="width:100px">Send Char</button>
 <br>
+<button onclick="sendData('M17')">Motor On</button>
+<button onclick="sendData('M18')">Motors Off</button>
+
+<button onclick="sendData('G21G91Y5F1000')">Move Y+</button>
+<button onclick="sendData('G21G91Y-5F1000')">Move Y-</button>
+<button onclick="sendData('G21G91X5F1000')">Move X+</button>
+<button onclick="sendData('G21G91X-5F1000')">Move X-</button>
+<button onclick="sendData('M10 P0 S30')">Pen Up</button>
+<button onclick="sendData('M10 P0 S100')">Pen Down</button>
 
 <label for="echoOn">
     <input type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
@@ -97,6 +106,17 @@
         document.getElementById("lineToSend").value = "";
         document.getElementById("lineToSend").value = "";
     }
+
+    async function sendData(dataToSend) {
+
+        dataToSend = dataToSend + "\r";
+        dataToSend = dataToSend + "\n";
+
+        if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
+        await writer.write(dataToSend);
+    }
+
+
     async function listenToPort() {
         const textDecoder = new TextDecoderStream();
         const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
