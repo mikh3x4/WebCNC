@@ -77,7 +77,7 @@
 
 
     var port, textEncoder, writableStreamClosed, writer, historyIndex = -1;
-    var recv_buffer = "";
+    var recv_buffer = [];
     var estop_var = false;
 
     const lineHistory = [];
@@ -105,9 +105,16 @@
                     let line = lines[i]; // Get the current line using index
                     //while(true){
                         console.log("sending", line);
+                        recv_buffer = "";
                         await sendData(line);
-                        await sleep(500);
+                        //await sleep(500);
                         console.log("sent");
+                        while (!recv_buffer.includes("ok")) {
+                            await sleep(1); // Short sleep to prevent blocking
+                        }
+                        console.log("got ok");
+
+
                     //}
 
                     console.log(line);
@@ -216,6 +223,7 @@
                     break;
                 }
                 appendToTerminal(value);
+                recv_buffer += value;
         }
     }
 
