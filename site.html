@@ -103,19 +103,23 @@
                 //for (let line of lines) {
                 for (let i = 0; i < lines.length; i++) {
                     let line = lines[i]; // Get the current line using index
-                    //while(true){
+
+                    while(true){
                         console.log("sending", line);
                         recv_buffer = "";
                         await sendData(line);
                         //await sleep(500);
                         console.log("sent");
-                        while (!recv_buffer.includes("ok")) {
+                        while (!recv_buffer.includes("ok") && !recv_buffer.includes("error")) {
                             await sleep(1); // Short sleep to prevent blocking
                         }
-                        console.log("got ok");
-
-
-                    //}
+                        
+                        if(recv_buffer.includes("ok")){
+                            console.log("got ok");
+                            break;
+                        }
+                        console.log("resending");
+                    }
 
                     console.log(line);
 
