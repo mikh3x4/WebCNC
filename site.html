@@ -1,66 +1,46 @@
 
-<style>
-    * {
-        background-color: #352e2e;
-        font-family: monospace;
-        color: rgb(60, 255, 1);
-        padding: 0px;
-    }
-
-    button,
-    datalist {
-        background-color: rgb(85, 85, 85);
-    }
-
-    input[type=text] {
-        color: rgb(179, 255, 179);
-        background-color: rgb(102, 86, 86);
-        border: 1px solid;
-        border-color: #696 #363 #363 #696;
-    }
-
-    [type="checkbox"] {
-        vertical-align: middle;
-    }
-
-    #serialResults {
-        font-family: monospace;
-        white-space: pre;
-        height: calc(100% - 120px);
-        width: calc(100% - 20px);
-        border-style: solid;
-        overflow: scroll;
-        background-color: rgb(88, 92, 92);
-        padding: 10px;
-        margin: 0px;
-    }
-</style>
+<!-- <style> -->
+<!--     * { -->
+<!--         background-color: #352e2e; -->
+<!--         font-family: monospace; -->
+<!--         color: rgb(60, 255, 1); -->
+<!--         padding: 0px; -->
+<!--     } -->
+<!---->
+<!--     button, -->
+<!--     datalist { -->
+<!--         background-color: rgb(85, 85, 85); -->
+<!--     } -->
+<!---->
+<!--     input[type=text] { -->
+<!--         color: rgb(179, 255, 179); -->
+<!--         background-color: rgb(102, 86, 86); -->
+<!--         border: 1px solid; -->
+<!--         border-color: #696 #363 #363 #696; -->
+<!--     } -->
+<!---->
+<!--     [type="checkbox"] { -->
+<!--         vertical-align: middle; -->
+<!--     } -->
+<!---->
+<!--     #serialResults { -->
+<!--         font-family: monospace; -->
+<!--         white-space: pre; -->
+<!--         height: calc(100% - 120px); -->
+<!--         width: calc(100% - 20px); -->
+<!--         border-style: solid; -->
+<!--         overflow: scroll; -->
+<!--         background-color: rgb(88, 92, 92); -->
+<!--         padding: 10px; -->
+<!--         margin: 0px; -->
+<!--     } -->
+<!-- </style> -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fastest Serial terminal in your browser for Chrome.</title>
 <meta name="Description" content="Set your baud speed and hit connect.
  A serial terminal that runs with out any plugins in chrome.">
-<button class="active" onclick="location.href='settings.html'">&#9881;</button>
-<button class="active" onclick="location.href='advanced_terminal/src/html/index.html'">&#128435;</button>
+
 <button onclick="connectSerial()">Connect</button>
-Baud:
-<input type="text" id="baud" list="baudList" style="width: 10ch;" onclick="this.value = ''"
-    onchange="localStorage.baud = this.value">
-<datalist id="baudList">
-    <option value="110">110</option>
-    <option value="300">300</option>
-    <option value="600">600</option>
-    <option value="1200">1200</option>
-    <option value="2400">2400</option>
-    <option value="4800">4800</option>
-    <option value="9600">9600</option>
-    <option value="14400">14400</option>
-    <option value="19200">19200</option>
-    <option value="38400">38400</option>
-    <option value="57600">57600</option>
-    <option value="115200">115200</option>
-    <option value="128000">128000</option>
-    <option value="256000">256000</option>
-</datalist>
 <button onclick="serialResultsDiv.innerHTML = '';">Clear</button>
 
 <br>
@@ -68,15 +48,6 @@ Baud:
 <button onclick="sendSerialLine()" style="width:45px">Send</button>
 <button onclick="sendCharacterNumber()" style="width:100px">Send Char</button>
 <br>
-
-<label for="carriageReturn">
-    <input type="checkbox" id="carriageReturn" onclick="localStorage.carriageReturn = this.checked;" checked>send with
-    /r
-</label>
-
-<label for="addLine">
-    <input type="checkbox" id="addLine" onclick="localStorage.addLine = this.checked;" checked>send with /n
-</label>
 
 <label for="echoOn">
     <input type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
@@ -93,7 +64,7 @@ Baud:
         try {
             // Prompt user to select any serial port.
             port = await navigator.serial.requestPort();
-            await port.open({ baudRate: document.getElementById("baud").value });
+            await port.open({ baudRate: 115200 });
             let settings = {};
 
             if (localStorage.dtrOn == "true") settings.dataTerminalReady = true;
@@ -116,8 +87,10 @@ Baud:
         dataToSend = document.getElementById("lineToSend").value;
         lineHistory.unshift(dataToSend);
         historyIndex = -1; // No history entry selected
-        if (document.getElementById("carriageReturn").checked == true) dataToSend = dataToSend + "\r";
-        if (document.getElementById("addLine").checked == true) dataToSend = dataToSend + "\n";
+
+        dataToSend = dataToSend + "\r";
+        dataToSend = dataToSend + "\n";
+
         if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
         await writer.write(dataToSend);
         if (dataToSend.trim().startsWith('\x03')) echo(false);
@@ -168,11 +141,6 @@ Baud:
             scrollHistory(-1);
         }
     })
-    document.getElementById("baud").value = (localStorage.baud == undefined ? 9600 : localStorage.baud);
-    document.getElementById("addLine").checked = (localStorage.addLine == "false" ? false : true);
-    document.getElementById("carriageReturn").checked = (localStorage.carriageReturn == "false" ? false : true);
     document.getElementById("echoOn").checked = (localStorage.echoOn == "false" ? false : true);
 </script>
-<br> © 2021 Autodrop3d Source <a
-    href="https://github.com/autodrop3d/serialTerminal.com">https://github.com/autodrop3d/serialTerminal.com</a>
 
