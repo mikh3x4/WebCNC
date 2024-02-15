@@ -77,16 +77,22 @@
 
 
     var port, textEncoder, writableStreamClosed, writer, historyIndex = -1;
-    var reader;
+    var recv_buffer = "";
+
     const lineHistory = [];
 
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+
     async function rungcode() {
+        console.log("running gcode");
         var fileInput = document.getElementById('fileInput');
         var file = fileInput.files[0];
         if (file) {
             var file_reader = new FileReader();
-            file_reader.onload = function(e) {
+            file_reader.onload = async function(e) {
 
+                console.log("loading file");
                 var content = e.target.result;
 
                  var lines = content.split(/\r\n|\n/);
@@ -94,21 +100,19 @@
 
                 isWaitingForOk = true;
 
-                lines.forEach(function(line) {
-                    sendData(line);
-
-                    while(true){
-                    var { value, done } = await reader.read();
-                        console.log("gotten", value);
-                        if (value.includes("ok"){
-                            console.log("has ok");
-
-                            break;
-                        }
-                    }
+                //for (let line of lines) {
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i]; // Get the current line using index
+                    //while(true){
+                        console.log("sending", line);
+                        await sendData(line);
+                        await sleep(500);
+                        console.log("sent");
+                    //}
 
                     console.log(line);
-                });
+                }
+
                 isWaitingForOk = false;
 
             };
@@ -148,7 +152,6 @@
         lineHistory.unshift(dataToSend);
         historyIndex = -1; // No history entry selected
 
-        dataToSend = dataToSend + "\r";
         dataToSend = dataToSend + "\n";
 
         if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
@@ -162,7 +165,6 @@
 
     async function sendData(dataToSend) {
 
-        dataToSend = dataToSend + "\r";
         dataToSend = dataToSend + "\n";
 
         if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
@@ -172,7 +174,7 @@
     async function NEWsendData(dataToSend) {
         // Add commands to the queue instead of sending them directly
         console.log("sending", isWaitingForOk);
-        commandQueue.push(dataToSend + "\r\n");
+        commandQueue.push(dataToSend + "\n");
         processQueue();
     }
 
@@ -197,12 +199,11 @@
     async function listenToPort() {
         const textDecoder = new TextDecoderStream();
         const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-        reader = textDecoder.readable.getReader();
+        const reader = textDecoder.readable.getReader();
 
         // Listen to data coming from the serial device.
         while (true) {
 
-            if(!isWaitingForOk){
                 const { value, done } = await reader.read();
                 if (done) {
                     // Allow the serial port to be closed later.
@@ -210,9 +211,7 @@
                     reader.releaseLock();
                     break;
                 }
-                // value is a string.
                 appendToTerminal(value);
-            }
         }
     }
 
