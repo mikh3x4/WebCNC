@@ -55,36 +55,14 @@
 <button onclick="sendData('G21G91X-5F1000')">Move X-</button>
 <button onclick="sendData('M10 P0 S30')">Pen Up</button>
 <button onclick="sendData('M10 P0 S100')">Pen Down</button>
+<button onclick="sendData('!')">ESTOP</button>
 
 
 <input type="file" id="fileInput">
-<button id="uploadButton">Upload and Display</button>
+<button onclick="rungcode()">Upload and Display</button>
 <div id="fileContent"></div>
 
 <script>
-    const sleep = ms => new Promise(r => setTimeout(r, ms));
-    document.getElementById('uploadButton').addEventListener('click', function() {
-        var fileInput = document.getElementById('fileInput');
-        var file = fileInput.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-
-                var content = e.target.result;
-
-                 var lines = content.split(/\r\n|\n/);
-                    lines.forEach(function(line) {
-                        sendData(line);
-                        console.log(line);
-                        
-                    });
-
-            };
-            reader.readAsText(file);
-        } else {
-            alert('Please select a file first.');
-        }
-    });
 </script>
 
 <label for="echoOn">
@@ -96,8 +74,52 @@
 <div id="serialResults">
 </div>
 <script>
+
+
     var port, textEncoder, writableStreamClosed, writer, historyIndex = -1;
+    var reader;
     const lineHistory = [];
+
+    async function rungcode() {
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0];
+        if (file) {
+            var file_reader = new FileReader();
+            file_reader.onload = function(e) {
+
+                var content = e.target.result;
+
+                 var lines = content.split(/\r\n|\n/);
+                    //lines.forEach(function(line) {
+
+                isWaitingForOk = true;
+
+                lines.forEach(function(line) {
+                    sendData(line);
+
+                    while(true){
+                    var { value, done } = await reader.read();
+                        console.log("gotten", value);
+                        if (value.includes("ok"){
+                            console.log("has ok");
+
+                            break;
+                        }
+                    }
+
+                    console.log(line);
+                });
+                isWaitingForOk = false;
+
+            };
+            file_reader.readAsText(file);
+        } else {
+            alert('Please select a file first.');
+        }
+    }
+
+
+
     async function connectSerial() {
         try {
             // Prompt user to select any serial port.
@@ -135,6 +157,8 @@
         document.getElementById("lineToSend").value = "";
         document.getElementById("lineToSend").value = "";
     }
+    var commandQueue = [];
+    var isWaitingForOk = false;
 
     async function sendData(dataToSend) {
 
@@ -145,25 +169,85 @@
         await writer.write(dataToSend);
     }
 
+    async function NEWsendData(dataToSend) {
+        // Add commands to the queue instead of sending them directly
+        console.log("sending", isWaitingForOk);
+        commandQueue.push(dataToSend + "\r\n");
+        processQueue();
+    }
+
+    async function processQueue() {
+        console.log("processing queue");
+        console.log("waiting for ok", isWaitingForOk);
+        // If we're already processing the queue or it's empty, do nothing
+        if (isWaitingForOk || commandQueue.length === 0) {
+            return;
+        }
+
+        console.log("next command ");
+        // Send the next command in the queue
+        const dataToSend = commandQueue.shift();
+        if (document.getElementById("echoOn").checked == true) appendToTerminal("> " + dataToSend);
+        await writer.write(dataToSend);
+        isWaitingForOk = true; // Set flag to wait for "ok"
+    }
+
+
 
     async function listenToPort() {
         const textDecoder = new TextDecoderStream();
         const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-        const reader = textDecoder.readable.getReader();
+        reader = textDecoder.readable.getReader();
 
         // Listen to data coming from the serial device.
         while (true) {
+
+            if(!isWaitingForOk){
+                const { value, done } = await reader.read();
+                if (done) {
+                    // Allow the serial port to be closed later.
+                    console.log('[readLoop] DONE', done);
+                    reader.releaseLock();
+                    break;
+                }
+                // value is a string.
+                appendToTerminal(value);
+            }
+        }
+    }
+
+    async function NEWlistenToPort() {
+        const textDecoder = new TextDecoderStream();
+        port.readable.pipeTo(textDecoder.writable);
+        const reader = textDecoder.readable.getReader();
+        while (true) {
             const { value, done } = await reader.read();
             if (done) {
-                // Allow the serial port to be closed later.
                 console.log('[readLoop] DONE', done);
                 reader.releaseLock();
                 break;
             }
-            // value is a string.
+            console.log("got value");
+            console.log(value);
+            // Check for "ok" response
+
             appendToTerminal(value);
+             //var lines = value.split(/\r\n|\n/);
+            //lines.forEach(function(line) {
+                //console.log("got line", line);
+                //if ( value.includes("ok")) {
+                    //console.log("processing next line");
+                    //isWaitingForOk = false; // Ready to send the next command
+                    //processQueue(); // Try processing the next command in the queue
+                //}
+            //});
+
+            console.log("got ok");
+            isWaitingForOk = false; // Ready to send the next command
+            processQueue(); // Try processing the next command in the queue
         }
     }
+
     const serialResultsDiv = document.getElementById("serialResults");
     async function appendToTerminal(newStuff) {
         serialResultsDiv.innerHTML += newStuff;
