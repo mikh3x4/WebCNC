@@ -1,5 +1,5 @@
 
-<!-- <style> -->
+<style>
 <!--     * { -->
 <!--         background-color: #352e2e; -->
 <!--         font-family: monospace; -->
@@ -23,18 +23,17 @@
 <!--         vertical-align: middle; -->
 <!--     } -->
 <!---->
-<!--     #serialResults { -->
-<!--         font-family: monospace; -->
-<!--         white-space: pre; -->
-<!--         height: calc(100% - 120px); -->
-<!--         width: calc(100% - 20px); -->
-<!--         border-style: solid; -->
-<!--         overflow: scroll; -->
-<!--         background-color: rgb(88, 92, 92); -->
-<!--         padding: 10px; -->
-<!--         margin: 0px; -->
-<!--     } -->
-<!-- </style> -->
+    #serialResults {
+        font-family: monospace;
+        white-space: pre;
+        height: calc(100% - 120px);
+        width: calc(100% - 20px);
+        border-style: solid;
+        overflow: scroll;
+        padding: 10px;
+        margin: 0px;
+    }
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fastest Serial terminal in your browser for Chrome.</title>
 <meta name="Description" content="Set your baud speed and hit connect.
@@ -46,7 +45,6 @@
 <br>
 <input type="text" id="lineToSend" style="width:calc(100% - 165px)">
 <button onclick="sendSerialLine()" style="width:45px">Send</button>
-<button onclick="sendCharacterNumber()" style="width:100px">Send Char</button>
 <br>
 <button onclick="sendData('M17')">Motor On</button>
 <button onclick="sendData('M18')">Motors Off</button>
@@ -57,6 +55,37 @@
 <button onclick="sendData('G21G91X-5F1000')">Move X-</button>
 <button onclick="sendData('M10 P0 S30')">Pen Up</button>
 <button onclick="sendData('M10 P0 S100')">Pen Down</button>
+
+
+<input type="file" id="fileInput">
+<button id="uploadButton">Upload and Display</button>
+<div id="fileContent"></div>
+
+<script>
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    document.getElementById('uploadButton').addEventListener('click', function() {
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+
+                var content = e.target.result;
+
+                 var lines = content.split(/\r\n|\n/);
+                    lines.forEach(function(line) {
+                        sendData(line);
+                        console.log(line);
+                        
+                    });
+
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Please select a file first.');
+        }
+    });
+</script>
 
 <label for="echoOn">
     <input type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
