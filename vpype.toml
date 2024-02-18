@@ -1,0 +1,15 @@
+[gwrite.my_own_plotter]
+unit = "mm"
+document_start = "G10 P0 L20 X0 Y0 Z0;\n"
+layer_start = ""
+line_start = ""
+# segment_first = """G0 X{x:.4f} Y{y:.4f};
+# M10 P0 S100;\nG04 P500;\n"""
+segment_first = """G0 X{x:.4f} Y{y:.4f};
+M10 P0 S100;\n"""
+segment = """G01 X{x:.4f} Y{y:.4f} F1000\n"""
+# line_end = """M10 P0 S30;\nG04 P500;\n"""
+line_end = """M10 P0 S30;\n"""
+document_end = "M10 P0 S30\nG0 X0 Y0"
+invert_y = true
+
