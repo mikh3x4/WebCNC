@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to GCODE Converter</title>
+</head>
+<body>
+    <h2>SVG to GCODE Converter</h2>
+    <input type="file" id="svgFile" accept=".svg">
+    <button id="convertBtn">Convert to GCODE</button>
+    <br><br>
+    <textarea id="gcodeResult" rows="10" cols="50"></textarea>
+    <br>
+    <button id="downloadGcode">Download GCODE</button>
+    <input type="file" id="uploadGcode" accept=".gcode">
+    <script src="app.js"></script>
+</body>
+
+<script>
+    document.getElementById('convertBtn').addEventListener('click', function() {
+    const fileInput = document.getElementById('svgFile');
+    const file = fileInput.files[0];
+    if (!file) {
+        alert('Please select an SVG file to convert.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('input_file', file);
+
+    fetch('/convert_to_gcode/', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('gcodeResult').value = e.target.result;
+        };
+        reader.readAsText(blob);
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+document.getElementById('downloadGcode').addEventListener('click', function() {
+    const gcode = document.getElementById('gcodeResult').value;
+    if (!gcode) {
+        alert('No GCODE available to download.');
+        return;
+    }
+
+    const blob = new Blob([gcode], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'converted.gcode';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});
+
+document.getElementById('uploadGcode').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('gcodeResult').value = e.target.result;
+        };
+        reader.readAsText(file);
+    }
+});
+</script>
+
+</html>

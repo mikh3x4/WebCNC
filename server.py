@@ -15,39 +15,34 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 import subprocess
+import tempfile
 
 app = FastAPI()
 
 
-@app.post("/covert_to_gcode")
-def list_notes(user: dict = Depends(get_user_by_api_key)):
-    print(user)
-    note_ids = user['note_ids']
-    with main_lock:
-        notes = [note_db.get(doc_id=note_id) for note_id in note_ids]
-    return {"name": user['name'], "notes": [{'note_id': note.doc_id, 'title': note['title']} for note in notes if note]}
-
 @app.post("/convert_to_gocde/")
-async def create_upload_file(file: UploadFile):
-    # Save the uploaded SVG file temporarily
-    input_path = f"temp/{file.filename}"
-    with open(input_path, "wb") as buffer:
-        buffer.write(await svg_file.read())
+async def create_upload_file(input_file: UploadFile):
+    # input_path = f"temp/{file.filename}"
+    # with open(input_path, "wb") as buffer:
+    #     buffer.write(await svg_file.read())
 
-    scale_x
-    scale_y
+    scale_x = "5cm"
+    scale_y = "5cm"
 
 # vpype read /Users/mik/Downloads/Drawing\ 1-4.svg trim 1 1 linemerge --tolerance 0.1mm linesort scaleto 16cm 7cm layout  tight gwrite --profile my_own_plotter ~/test/test.gcode
-    subprocess.run(["vpype", "read", input_file,
+
+    outfile = tempfile.SpooledTemporaryFile
+    subprocess.run(["vpype", "read", "-",
                     "linemerge", "--tolerance", "0.1mm",
                     "linesort",
                     "scaleto", scale_x, scale_y,
                     "layout", "tight",
-                    "gwrite", "--profile", "my_own_plotter", outfile],
-                   capture_output=True)
+                    "gwrite", "--profile", "my_own_plotter", "-"],
+               capture_output=True, stdin=input_file, stdout = outfile)
 
-
-    return {"filename": file.filename}
+    return outfile
+    # return outfile.read()
+    # return {"filename": file.filename}
 
 @app.get("/", response_class=FileResponse)
 def read_root():

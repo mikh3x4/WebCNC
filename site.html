@@ -108,10 +108,13 @@
                         console.log("sending", line);
                         recv_buffer = "";
                         await sendData(line);
-                        //await sleep(500);
+
                         console.log("sent");
                         while (!recv_buffer.includes("ok") && !recv_buffer.includes("error")) {
-                            await sleep(1); // Short sleep to prevent blocking
+                            await sleep(100); // Short sleep to prevent blocking
+                            if(estop_var){
+                                break;
+                            }
                         }
                         
                         if(recv_buffer.includes("ok")){
@@ -119,6 +122,12 @@
                             break;
                         }
                         console.log("resending");
+                        await sleep(50);
+
+                        if(estop_var){
+                            break;
+                        }
+
                     }
 
                     console.log(line);
@@ -127,6 +136,7 @@
                         break;
                     }
                 }
+                console.log("STOPPED")
 
                 isWaitingForOk = false;
 
