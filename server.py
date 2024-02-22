@@ -14,6 +14,8 @@ from fastapi.responses import HTMLResponse
 
 from pydantic import BaseModel
 
+import subprocess
+
 app = FastAPI()
 
 
@@ -25,6 +27,27 @@ def list_notes(user: dict = Depends(get_user_by_api_key)):
         notes = [note_db.get(doc_id=note_id) for note_id in note_ids]
     return {"name": user['name'], "notes": [{'note_id': note.doc_id, 'title': note['title']} for note in notes if note]}
 
+@app.post("/convert_to_gocde/")
+async def create_upload_file(file: UploadFile):
+    # Save the uploaded SVG file temporarily
+    input_path = f"temp/{file.filename}"
+    with open(input_path, "wb") as buffer:
+        buffer.write(await svg_file.read())
+
+    scale_x
+    scale_y
+
+# vpype read /Users/mik/Downloads/Drawing\ 1-4.svg trim 1 1 linemerge --tolerance 0.1mm linesort scaleto 16cm 7cm layout  tight gwrite --profile my_own_plotter ~/test/test.gcode
+    subprocess.run(["vpype", "read", input_file,
+                    "linemerge", "--tolerance", "0.1mm",
+                    "linesort",
+                    "scaleto", scale_x, scale_y,
+                    "layout", "tight",
+                    "gwrite", "--profile", "my_own_plotter", outfile],
+                   capture_output=True)
+
+
+    return {"filename": file.filename}
 
 @app.get("/", response_class=FileResponse)
 def read_root():
