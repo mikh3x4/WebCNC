@@ -2,7 +2,7 @@
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from tinydb import TinyDB, Query
+# from tinydb import TinyDB, Query
 from typing import List, Optional
 import uuid
 

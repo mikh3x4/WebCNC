@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Some plotting</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+
+
+
+<body>
+        <!-- asyncio.run(micropip.install("vpype", keep_going = True)) -->
+        <!-- import micropip -->
+        <!-- import asyncio -->
+        <!---->
+        <!-- asyncio.run(micropip.install("vpype", keep_going = True)) -->
+        <!---->
+        <!-- asyncio.run( micropip.install("matplotlib") ) -->
+<!-- "numpy", "shapely", "scipy",  -->
+        <!-- interpreter = "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js" -->
+    <div id="matplotlib-lineplot"></div>
+    <py-config>
+        packages= ["matplotlib", "vpype==1.13.0"]
+        [splashscreen]
+            enabled = false
+    </py-config>
+    <py-script output="matplotlib-lineplot">
+        import numpy as np
+        print(np.__version__)
+        import scipy
+        print(scipy.__version__)
+        import shapely
+        print(shapely.__version__)
+        import pyodide
+        print("Pyodide version:", pyodide.__version__)
+
+        import vpype
+        print("vpype version:", vpype.__version__)
+
+        import matplotlib.pyplot as plt
+
+        fig, ax = plt.subplots()
+        # x axis
+        x = ["Python", "Scala", "Java", "Assembly"]
+        # y axis
+        y = [10, 5, 9, 12]
+        plt.plot(x, y, marker='o', linestyle='-', color='b')
+
+        plt.xlabel('Language')
+        plt.ylabel('Score')
+        plt.title('Language versus Vibe')
+        fig
+    </py-script>
+</body>
+
+</html>
