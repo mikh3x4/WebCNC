@@ -9,24 +9,18 @@
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 
-
-
 <body>
-        <!-- asyncio.run(micropip.install("vpype", keep_going = True)) -->
-        <!-- import micropip -->
-        <!-- import asyncio -->
-        <!---->
-        <!-- asyncio.run(micropip.install("vpype", keep_going = True)) -->
-        <!---->
-        <!-- asyncio.run( micropip.install("matplotlib") ) -->
-<!-- "numpy", "shapely", "scipy",  -->
-        <!-- interpreter = "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js" -->
     <div id="matplotlib-lineplot"></div>
+    <input type="file" id="file-upload" accept=".svg,.dxf,.hpgl" />
+    <button id="process-button" py-click="process_file()">Process File</button>
+    <div id="output-image"></div>
+
     <py-config>
-        packages= ["matplotlib", "vpype==1.13.0"]
+        packages = ["matplotlib", "vpype==1.13.0"]
         [splashscreen]
             enabled = false
     </py-config>
+
     <py-script output="matplotlib-lineplot">
         import numpy as np
         print(np.__version__)
@@ -52,7 +46,36 @@
         plt.xlabel('Language')
         plt.ylabel('Score')
         plt.title('Language versus Vibe')
-        fig
+
+        def process_file():
+            file_input = Element("file-upload")
+            uploaded_file = file_input.element.files.item(0)
+            
+            if uploaded_file is not None:
+                file_name = uploaded_file.name
+                
+                # Read the file data as ArrayBuffer
+                array_buffer = await uploaded_file.arrayBuffer()
+                
+                # Convert ArrayBuffer to bytes
+                file_data = bytes(array_buffer)
+
+                vpype.execute(pipeline = "", document = )
+                
+                # Process the file with vpype
+                with open(file_name, "wb") as f:
+                    f.write(file_data)
+                
+                # Perform vpype operations on the file
+                # For example, you can optimize the paths
+                vpype_output = vpype.read_multilayer_svg(file_name).scale(0.5).write_svg("output.svg")
+                
+                # Display the output image
+                output_div = Element("output-image")
+                output_div.write('<img src="output.svg" />')
+            
+            else:
+                print("No file selected.")
     </py-script>
 </body>
 
