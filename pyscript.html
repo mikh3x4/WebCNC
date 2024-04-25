@@ -23,7 +23,7 @@
 <!-- vpype-occult==0.4.0 -->
 <!-- vpype-vectrace==0.1.2 -->
     <py-config>
-        packages = ["vpype==1.13.0", "vpype-gcode"]
+        packages = ["vpype==1.13.0", "vpype-gcode", "vpype-dxf", "vpype-vectrace"]
         [splashscreen]
             enabled = false
     </py-config>
@@ -84,7 +84,22 @@ async def process_file():
     #print(text)
     display("done", target="output")
 
-    vpype_cli.execute("read input.svg trim 1 1 linemerge --tolerance 0.1mm linesort scaleto 16cm 7cm layout tight gwrite --profile my_own_plotter output.gcode", global_opt="-c config.toml")
+    width = 16
+    height = 9
+
+    command = f"read input.svg trim 1 1 linemerge --tolerance 0.1mm linesort scaleto {width}cm {height}cm layout tight "
+
+    vpype_cli.execute(command + "gwrite --profile my_own_plotter output.gcode", global_opt="-c config.toml")
+    vpype_cli.execute(command + "write --pen-up output.svg", global_opt="-c config.toml")
+
+    with open("output.svg") as f:
+        svg_as_string = f.read()
+
+    with open("output.gcode") as f:
+        gcode = f.read()
+
+    dest_elem = js.document.getElementById("output-image")
+    dest_elem.innerHTML = svg_as_string
 
     </py-script>
 
