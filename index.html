@@ -83,6 +83,43 @@
 
     <py-repl id="my-repl" auto-generate="true"> </py-repl>
 
+<dialog>
+  <button autofocus>Close</button>
+  <p>This modal dialog has a groovy backdrop!</p>
+
+<label for="story">Vpype config</label>
+
+<textarea id="story" name="story" rows="5" cols="33">
+It was a dark and stormy night...
+</textarea>
+
+  <p>Vpype pipeline options</p>
+  <input type="text" id="pipline-config">
+
+  <p>Pen Up command</p>
+  <input type="text" id="pen-up-command">
+
+  <p>Pen Down command</p>
+  <input type="text" id="pen-down-command">
+
+</dialog>
+
+<script>
+  const dialog = document.querySelector("dialog");
+  const showButton = document.querySelector("#slice-config");
+  const closeButton = document.querySelector("dialog button");
+
+  // "Show the dialog" button opens the dialog modally
+  showButton.addEventListener("click", () => {
+    dialog.showModal();
+  });
+
+  // "Close" button closes the dialog
+  closeButton.addEventListener("click", () => {
+  dialog.close();
+});
+</script>
+
 </body>
 
 </html>
