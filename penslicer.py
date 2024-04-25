@@ -71,10 +71,10 @@ async def process_file():
     if uploaded_file is None:
         return
 
-    display("hi", target="output")
+    display("hi", target="serialResults")
     file_name = uploaded_file.name
 
-    display("done", target="output")
+    display("done", target="serialResults")
 
     width = 16
     height = 9

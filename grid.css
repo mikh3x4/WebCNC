@@ -48,6 +48,7 @@ py-config {
     ".";
   grid-area: Slicing-Area;
   background-color: blue;
+  max-height: 60vh;
 }
 
 .Banner2 { grid-area: Banner2; }
@@ -58,4 +59,18 @@ py-config {
 }
 
 .Command-Buttons { grid-area: Command-Buttons; }
+
+
+#serialResults {
+    font-family: monospace;
+    white-space: pre;
+    /* height: calc(100% - 120px); */
+    height: auto;
+    /* width: calc(100% - 20px); */
+    max-height: 40vh;
+    border-style: solid;
+    overflow: scroll;
+    padding: 10px;
+    margin: 0px;
+}
 

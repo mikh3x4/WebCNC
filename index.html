@@ -29,9 +29,13 @@
   </div>
   <div class="Blank"></div>
   <div class="Gcode-History">
+
+
+
     <div class="Banner"></div>
 
-    <div id="output"> </div>
+    <div id="serialResults"></div>
+
   </div>
   <div class="Slicing-Area">
     <div class="Banner2"></div>
@@ -39,26 +43,32 @@
     <div id="output-image"> </div>
   </div>
   <div class="Slicing-commands">
-    <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" />
+    <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
 
-    <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button>
-    <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button>
+    <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button><br>
+    <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button><br>
+
+    Width: <input type="text" id="width_box" value="11cm"><br>
+    Height: <input type="text" id="height_box" value="7cm"><br>
+
+    <button id="move-in-box">Run Outline</button><br>
+    <button id="slice-config">Advanced Config</button>
   </div>
   <div class="Command-Buttons">
 
 <br>
 <button onclick="connectSerial()">Connect</button><br>
 
-<button onclick="sendData('M17')">Motor On</button><br>
+<button onclick="sendData('M17')">Motor On</button>
 <button onclick="sendData('M18')">Motors Off</button><br>
 
+<button onclick="sendData('G21G91Y-5F1000')">Move Y-</button>
 <button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
-<button onclick="sendData('G21G91Y-5F1000')">Move Y-</button><br>
+<button onclick="sendData('G21G91X-5F1000')">Move X-</button>
 <button onclick="sendData('G21G91X5F1000')">Move X+</button><br>
-<button onclick="sendData('G21G91X-5F1000')">Move X-</button><br>
-<button onclick="sendData('M10 P0 S30')">Pen Up</button><br>
+<button onclick="sendData('M10 P0 S30')">Pen Up</button>
 <button onclick="sendData('M10 P0 S100')">Pen Down</button><br>
-<button onclick="estop_var = true;sendData('!');">ESTOP</button><br>
+<button onclick="estop_var = true;sendData('!');">ESTOP</button>
 <button onclick="estop_var = false;sendData('~');">Resume</button><br>
 
 <button onclick="rungcode()">Upload and Display</button>
