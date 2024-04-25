@@ -58,6 +58,8 @@ text = None
 
 from pyscript import when
 
+import vpype_cli
+
 import js
 def handler(loop, context):
     js.console.error(context.message)
@@ -65,7 +67,6 @@ def handler(loop, context):
 loop.set_exception_handler(handler)
 
 
-#@when('click', '#process-button')
 async def process_file():
     global text
     file_input = Element("file-upload")
@@ -77,17 +78,13 @@ async def process_file():
     file_name = uploaded_file.name
     text = await uploaded_file.text()
 
-    #text = loop.run_until_complete(uploaded_file.text())
-    print("stating")
+    with open("input.svg", "w") as f:
+        f.write(text)
 
-    print(text)
-    display("helllo", target="output")
+    #print(text)
+    display("done", target="output")
 
-#from js import document
-#from pyodide import create_proxy
-#click_proxy = create_proxy(process_file)
-#e = document.getElementById("process-button")
-#e.addEventListener("click", click_proxy)
+    vpype_cli.execute("read input.svg trim 1 1 linemerge --tolerance 0.1mm linesort scaleto 16cm 7cm layout tight gwrite --profile my_own_plotter output.gcode", global_opt="-c config.toml")
 
     </py-script>
 
