@@ -11,7 +11,7 @@
 
 <body>
     <div id="matplotlib-lineplot"></div>
-    <input type="file" id="file-upload" accept=".svg,.dxf,.png" />
+    <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" />
 
     <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button>
     <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button>
@@ -112,12 +112,20 @@ async def process_file():
     width = 16
     height = 9
 
-    if(file_name.split(".")[-1] == "png"): # TODO not working
+    if(file_name.split(".")[-1] == "png"):
         js_array = await uploaded_file.arrayBuffer()
         text = js_array.to_py().tobytes()
         input_cmd = "iread input.png"
         with open("input.png", "wb") as f:
             f.write(text)
+
+    if(file_name.split(".")[-1] == "gcode"):
+        gcode = await uploaded_file.text()
+        with open("output.gcode", "w") as f:
+            f.write(gcode)
+        dest_elem = js.document.getElementById("output-image")
+        dest_elem.innerHTML = gcode.replace("\n", "<br>")
+        return
 
     if(file_name.split(".")[-1] == "svg"):
         text = await uploaded_file.text()
