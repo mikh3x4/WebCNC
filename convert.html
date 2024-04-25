@@ -29,7 +29,7 @@
     const formData = new FormData();
     formData.append('input_file', file);
 
-    fetch('/convert_to_gcode/', {
+    fetch('http://cloud.adamkiewi.cz:8000/convert_to_gcode/', {
         method: 'POST',
         body: formData,
     })
