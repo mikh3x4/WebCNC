@@ -13,7 +13,7 @@
     <div id="matplotlib-lineplot"></div>
     <input type="file" id="file-upload" accept=".svg,.dxf,.png" />
 
-    <button id="process-button" py-click="loop.create_task(process_file())">Process File</button>
+    <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button>
 
     <div id="output-image"></div>
     <div id="output"></div>
@@ -67,6 +67,13 @@ def handler(loop, context):
 loop.set_exception_handler(handler)
 
 
+async def wrap(a):
+    try:
+        return await a
+    except Exception as e:
+        print(e)
+    
+
 async def process_file():
     global text
     file_input = Element("file-upload")
@@ -76,21 +83,36 @@ async def process_file():
 
     display("hi", target="output")
     file_name = uploaded_file.name
-    text = await uploaded_file.text()
 
-    with open("input.svg", "w") as f:
-        f.write(text)
-
-    #print(text)
     display("done", target="output")
 
     width = 16
     height = 9
 
-    command = f"read input.svg trim 1 1 linemerge --tolerance 0.1mm linesort scaleto {width}cm {height}cm layout tight "
+    if(file_name.split(".")[-1] == "png"): # TODO not working
+        js_array = await uploaded_file.arrayBuffer()
+        text = js_array.to_py().tobytes()
+        input_cmd = "iread input.png"
+        with open("input.png", "wb") as f:
+            f.write(text)
 
-    vpype_cli.execute(command + "gwrite --profile my_own_plotter output.gcode", global_opt="-c config.toml")
+    if(file_name.split(".")[-1] == "svg"):
+        text = await uploaded_file.text()
+        input_cmd = "read input.svg"
+        with open("input.svg", "w") as f:
+            f.write(text)
+
+    extra_pipeline = " trim 1 1 "
+    extra_pipeline = ""
+
+    command = input_cmd + extra_pipeline + f" linemerge --tolerance 0.1mm linesort scaleto {width}cm {height}cm layout tight "
+
+    cmd = command + "gwrite --profile my_own_plotter output.gcode"
+    print(cmd)
+
+    vpype_cli.execute(cmd, global_opt="-c config.toml")
     vpype_cli.execute(command + "write --pen-up output.svg", global_opt="-c config.toml")
+
 
     with open("output.svg") as f:
         svg_as_string = f.read()
