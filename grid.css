@@ -1,0 +1,61 @@
+html, body {
+  margin:0px;
+  height:100%;
+}
+
+py-config {
+  display: none;
+}
+
+.container {  display: grid;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: 1fr 1fr 3em;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "Slicing-Area Slicing-commands"
+    "Gcode-History Command-Buttons"
+    "Send-Command Blank";
+  background-color: pink;
+  height: 100%;
+}
+
+.Send-Command { grid-area: Send-Command; }
+
+.Blank { grid-area: Blank; }
+
+.Gcode-History {  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 3em 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "Banner"
+    ".";
+  grid-area: Gcode-History;
+  background-color: red;
+}
+
+.Banner { grid-area: Banner; }
+
+.Slicing-Area {  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 3em 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "Banner2"
+    ".";
+  grid-area: Slicing-Area;
+  background-color: blue;
+}
+
+.Banner2 { grid-area: Banner2; }
+
+.Slicing-commands {
+  grid-area: Slicing-commands;
+  background-color: yellow;
+}
+
+.Command-Buttons { grid-area: Command-Buttons; }
+

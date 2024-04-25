@@ -1,49 +1,78 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
-    <py-env>
-        - numpy
-        - matplotlib
-    </py-env>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="grid.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Web Pen Plotter</title>
+    <!-- <link rel="stylesheet" href="pyscript/pyscript.css" /> -->
+    <script defer src="pyscript/pyscript.js"></script>
+    <script defer src="serial_sender.js"></script>
+
 </head>
 
 <body>
-    <label for="Upload a File"></label>
-    <input type="file" id="file-upload">
+    <py-config>
+        packages = ["vpype==1.13.0", "vpype-gcode", "vpype-dxf", "vpype-vectrace"]
+        [splashscreen]
+            enabled = false
+    </py-config>
+    <py-script src="penslicer.py"> </py-script>
 
-    <div id="plot"></div>
+<div class="container">
+  <div class="Send-Command" style="display: flex; align-items: center;">
 
-    <py-script output="plot">
+    <input type="text" id="lineToSend" style="flex: 1; ">
+    <button onclick="sendSerialLine()" style="width: 50px; ">Send</button>
+  </div>
+  <div class="Blank"></div>
+  <div class="Gcode-History">
+    <div class="Banner"></div>
 
-from js import document, window, Uint8Array
-from pyodide.ffi.wrappers import add_event_listener
+    <div id="output"> </div>
+  </div>
+  <div class="Slicing-Area">
+    <div class="Banner2"></div>
 
-async def upload_file_and_show(e):
-    file_list = e.target.files
-    first_item = file_list.item(0)
+    <div id="output-image"> </div>
+  </div>
+  <div class="Slicing-commands">
+    <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" />
 
-    my_bytes: bytes = await get_bytes_from_file(first_item)
-    print(my_bytes[:10]) # Do something with file contents
+    <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button>
+    <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button>
+  </div>
+  <div class="Command-Buttons">
 
-async def get_bytes_from_file(file):
-    array_buf = await file.arrayBuffer()
-    return array_buf.to_bytes()
+<br>
+<button onclick="connectSerial()">Connect</button><br>
 
-add_event_listener(document.getElementById("file-upload"), "change", upload_file_and_show)
-        <!-- import matplotlib.pyplot as plt -->
-        <!-- import numpy as np -->
-        <!---->
-        <!-- x = np.random.randn(1000) -->
-        <!-- y = np.random.randn(1000) -->
-        <!---->
-        <!-- fig, ax = plt.subplots() -->
-        <!-- ax.scatter(x, y) -->
-        <!-- fig -->
-    </py-script>
+<button onclick="sendData('M17')">Motor On</button><br>
+<button onclick="sendData('M18')">Motors Off</button><br>
+
+<button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
+<button onclick="sendData('G21G91Y-5F1000')">Move Y-</button><br>
+<button onclick="sendData('G21G91X5F1000')">Move X+</button><br>
+<button onclick="sendData('G21G91X-5F1000')">Move X-</button><br>
+<button onclick="sendData('M10 P0 S30')">Pen Up</button><br>
+<button onclick="sendData('M10 P0 S100')">Pen Down</button><br>
+<button onclick="estop_var = true;sendData('!');">ESTOP</button><br>
+<button onclick="estop_var = false;sendData('~');">Resume</button><br>
+
+<button onclick="rungcode()">Upload and Display</button>
+
+<button onclick="serialResultsDiv.innerHTML = '';">Clear</button>
+<br>
+<label for="echoOn">
+    <input type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
+</label>
+
+  </div>
+</div>
+
+    <py-repl id="my-repl" auto-generate="true"> </py-repl>
 
 </body>
 
