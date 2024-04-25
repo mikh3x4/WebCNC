@@ -14,6 +14,7 @@
     <input type="file" id="file-upload" accept=".svg,.dxf,.png" />
 
     <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button>
+    <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button>
 
     <div id="output-image"></div>
     <div id="output"></div>
@@ -73,9 +74,31 @@ async def wrap(a):
     except Exception as e:
         print(e)
     
+from js import Uint8Array, File, URL, document
+import io
+from pyodide.ffi.wrappers import add_event_listener
+
+gcode = None
+
+def downloadFile(*args):
+    data = gcode
+    encoded_data = data.encode('utf-8')
+    my_stream = io.BytesIO(encoded_data)
+
+    js_array = Uint8Array.new(len(encoded_data))
+    js_array.assign(my_stream.getbuffer())
+
+    file = File.new([js_array], "unused_file_name.txt", {type: "text/plain"})
+    url = URL.createObjectURL(file)
+
+    hidden_link = document.createElement("a")
+    hidden_link.setAttribute("download", "output.gcode")
+    hidden_link.setAttribute("href", url)
+    hidden_link.click()
+
 
 async def process_file():
-    global text
+    global gcode
     file_input = Element("file-upload")
     uploaded_file = file_input.element.files.item(0)
     if uploaded_file is None:
@@ -112,7 +135,6 @@ async def process_file():
 
     vpype_cli.execute(cmd, global_opt="-c config.toml")
     vpype_cli.execute(command + "write --pen-up output.svg", global_opt="-c config.toml")
-
 
     with open("output.svg") as f:
         svg_as_string = f.read()
