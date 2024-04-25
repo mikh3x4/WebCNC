@@ -120,5 +120,7 @@ async def process_file():
     dest_elem = js.document.getElementById("output-image")
     dest_elem.innerHTML = svg_as_string
 
-    dest_elem.children[0].height = "100%"
+    dest_elem.children[0].setAttribute("width", "auto")
+    dest_elem.children[0].setAttribute("height", "auto")
+    dest_elem.children[0].setAttribute("preserveAspectRatio", "xMidYMid meet")
 

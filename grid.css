@@ -1,6 +1,10 @@
 html, body {
-  margin:0px;
+  border:10px;
+
   height:100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  /* overflow-y: hidden; */
 }
 
 py-config {
