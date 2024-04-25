@@ -51,7 +51,6 @@
     Width: <input type="text" id="width_box" value="11cm"><br>
     Height: <input type="text" id="height_box" value="7cm"><br>
 
-    <button id="move-in-box">Run Outline</button><br>
     <button id="slice-config">Advanced Config</button>
   </div>
   <div class="Command-Buttons">
@@ -71,10 +70,10 @@
 <button onclick="estop_var = true;sendData('!');">ESTOP</button>
 <button onclick="estop_var = false;sendData('~');">Resume</button><br>
 
-<button onclick="rungcode()">Upload and Display</button>
+<button onclick="rungcode()">Run Gcode</button>
+<button id="move-in-box">Run Outline</button><br>
 
 <button onclick="serialResultsDiv.innerHTML = '';">Clear</button>
-<br>
 <label for="echoOn">
     <input type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
 </label>
