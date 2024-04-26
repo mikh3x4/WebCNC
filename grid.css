@@ -4,7 +4,7 @@ html, body {
   height:100%;
   max-width: 100%;
   overflow-x: hidden;
-  /* overflow-y: hidden; */
+  /* overfleow-y: hidden; */
 }
 
 py-config {
@@ -51,7 +51,7 @@ py-config {
     "Banner2"
     ".";
   grid-area: Slicing-Area;
-  background-color: blue;
+  background-color: green;
   max-height: 60vh;
 }
 
