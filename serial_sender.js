@@ -3,20 +3,32 @@ var port, textEncoder, writableStreamClosed, writer, historyIndex = -1;
 var recv_buffer = [];
 var estop_var = false;
 
+// allwos for sharing code with python
+// https://jeff.glass/post/pyscript-js-functions-original/
+function createObject(x, variableName){
+let execString = variableName + " = x"
+console.log("Running `" + execString + "`");
+eval(variableName + " = x")
+}
+
 const lineHistory = [];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-
 async function rungcode() {
 console.log("running gcode");
-var fileInput = document.getElementById('fileInput');
-var file = fileInput.files[0];
-if (file) {
-    var file_reader = new FileReader();
-    file_reader.onload = async function(e) {
 
-	console.log("loading file");
-	var content = e.target.result;
+
+	var content = pyodideGlobals.get('gcode')
+
+	    if (content == null){
+		    alert("No gcode loaded")
+		    return;
+	    }
+
+	   if ( writer == null){
+		   alert("No plotter connected")
+		    return;
+	   }
 
 	 var lines = content.split(/\r\n|\n/);
 	    //lines.forEach(function(line) {
@@ -63,11 +75,6 @@ if (file) {
 
 	isWaitingForOk = false;
 
-    };
-    file_reader.readAsText(file);
-} else {
-    alert('Please select a file first.');
-}
 }
 
 

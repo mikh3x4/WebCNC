@@ -35,6 +35,10 @@ def handler(loop, context):
 loop.set_exception_handler(handler)
 
 
+from js import createObject
+from pyodide.ffi import create_proxy
+createObject(create_proxy(globals()), "pyodideGlobals")
+
 async def wrap(a):
     try:
         return await a
@@ -101,7 +105,7 @@ async def process_file():
             f.write(text)
 
     extra_pipeline = " trim 1 1 "
-    extra_pipeline = ""
+    # extra_pipeline = ""
 
     command = input_cmd + extra_pipeline + f" linemerge --tolerance 0.1mm linesort scaleto {width}cm {height}cm layout tight "
 
