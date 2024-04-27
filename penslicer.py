@@ -90,6 +90,13 @@ async def process_file():
         with open("input.png", "wb") as f:
             f.write(text)
 
+    if(file_name.split(".")[-1] == "dxf"):
+        js_array = await uploaded_file.arrayBuffer()
+        text = js_array.to_py().tobytes()
+        input_cmd = "dread input.dxf"
+        with open("input.dxf", "wb") as f:
+            f.write(text)
+
     if(file_name.split(".")[-1] == "gcode"):
         gcode = await uploaded_file.text()
         with open("output.gcode", "w") as f:
