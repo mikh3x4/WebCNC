@@ -86,14 +86,14 @@ async def process_file():
     if(file_name.split(".")[-1] == "png"):
         js_array = await uploaded_file.arrayBuffer()
         text = js_array.to_py().tobytes()
-        input_cmd = "iread input.png"
+        input_cmd = "iread input.png "
         with open("input.png", "wb") as f:
             f.write(text)
 
     if(file_name.split(".")[-1] == "dxf"):
         js_array = await uploaded_file.arrayBuffer()
         text = js_array.to_py().tobytes()
-        input_cmd = "dread input.dxf"
+        input_cmd = "dread input.dxf "
         with open("input.dxf", "wb") as f:
             f.write(text)
 
@@ -107,7 +107,7 @@ async def process_file():
 
     if(file_name.split(".")[-1] == "svg"):
         text = await uploaded_file.text()
-        input_cmd = "read input.svg"
+        input_cmd = "read input.svg "
         with open("input.svg", "w") as f:
             f.write(text)
 
@@ -118,6 +118,10 @@ async def process_file():
 
     cmd = command + "gwrite --profile my_own_plotter output.gcode"
     print(cmd)
+
+    cmd = js.document.getElementById("pipline-config").value
+    cmd = cmd.replace("{width}", js.document.getElementById("width_box").value)
+    cmd = cmd.replace("{height}", js.document.getElementById("height_box").value)
 
     vpype_cli.execute(cmd, global_opt="-c config.toml")
     vpype_cli.execute(command + "write --pen-up output.svg", global_opt="-c config.toml")

@@ -84,31 +84,22 @@
     <py-repl id="my-repl" auto-generate="true"> </py-repl>
 
 <dialog>
-  <button autofocus>Close</button>
+  <button autofocus style="float:right;">Close</button> <br>
 
   <label for="story">Vpype gcode config</label> <br>
 
-<textarea id="story" name="story" rows="20" cols="100">
-[gwrite.my_own_plotter]
-unit = "mm"
-document_start = "G90;\\nG10 P0 L20 X0 Y0 Z0;\\n"
-layer_start = ""
-line_start = ""
-segment_first = """G0 X{x:.4f} Y{y:.4f};\nM10 P0 S100;\n"""
-segment = """G01 X{x:.4f} Y{y:.4f} F1000\n"""
-line_end = """M10 P0 S30;\n"""
-document_end = "M10 P0 S30;\nG0 X0 Y0"
-invert_y = true
+<textarea id="vpype-gcode-settings" name="vpype-gcode-settings" rows="20" cols="100">
+  placeholder
 </textarea>
 
   <p>Vpype pipeline options</p><br>
-  <input type="text" id="pipline-config" style="width:100%;" value="linemerge --tolerance 0.1mm linesort scaleto {width}cm {height}cm layout tight gwrite --profile my_own_plotter output.gcode">
+  <input type="text" id="vpype-pipline-config" style="width:100%;" value="placeholder">
 
   <p>Pen Up command</p><br>
-  <input type="text" id="pen-up-command" value="M10 P0 S30">
+  <input type="text" id="pen-up-command" value="placeholder">
 
   <p>Pen Down command</p><br>
-  <input type="text" id="pen-down-command" value="M10 P0 S100">
+  <input type="text" id="pen-down-command" value="placeholder">
   <br>
 
   <button id="restore-settings">Restore</button>
@@ -121,32 +112,58 @@ invert_y = true
   const closeButton = document.querySelector("dialog button");
 
   //qs = document.querySelector
-  if(localStorage.getItem('save-settings') == null){
-    document.querySelector("#pipline-config").value="test"
-    document.querySelector("#pen-up-command").value="test2"
-    document.querySelector("#pen-down-command").value="test3"
+  load_advanced_settings = () => {
+    if(localStorage.getItem('save-settings') == null){
+      console.log("no settings found")
+      document.querySelector("#vpype-pipline-config").value="linemerge --tolerance 0.1mm linesort scaleto {width} {height} layout tight gwrite --profile my_own_plotter output.gcode"
+      document.querySelector("#pen-up-command").value="M10 P0 S30"
+      document.querySelector("#pen-down-command").value="M10 P0 S100"
+
+      document.querySelector("#vpype-gcode-settings").value=`[gwrite.my_own_plotter]
+unit = "mm"
+document_start = "G90;\\nG10 P0 L20 X0 Y0 Z0;\\n"
+layer_start = ""
+line_start = ""
+segment_first = """G0 X{x:.4f} Y{y:.4f};\\nM10 P0 S100;\\n"""
+segment = """G01 X{x:.4f} Y{y:.4f} F1000\\n"""
+line_end = """M10 P0 S30;\\n"""
+document_end = "M10 P0 S30;\\nG0 X0 Y0"
+invert_y = true
+`
+
+    }else{
+      document.querySelector("#vpype-pipline-config").value=localStorage.getItem('vpype-pipline-config')
+      document.querySelector("#pen-up-command").value=localStorage.getItem('pen-up-command')
+      document.querySelector("#pen-down-command").value=localStorage.getItem('pen-down-command')
+      document.querySelector("#vpype-gcode-settings").value=localStorage.getItem('vpype-gcode-settings')
+
+    }
   }
+
+  load_advanced_settings();
 
   document.querySelector("dialog #save-settings").addEventListener("click", () => {
     localStorage.setItem('save-settings', 1 );
-    localStorage.setItem('vpype-gcode-settings', document.querySelector("#pipline-config").value );
+    localStorage.setItem('vpype-pipline-config', document.querySelector("#vpype-pipline-config").value );
     localStorage.setItem('pen-up-command', document.querySelector("#pen-up-command").value );
     localStorage.setItem('pen-down-command', document.querySelector("#pen-down-command").value );
+    localStorage.setItem('vpype-gcode-settings', document.querySelector("#vpype-gcode-settings").value );
+    alert("settings saved")
   });
 
   document.querySelector("dialog #restore-settings").addEventListener("click", () => {
-    dialog.showModal();
+    if (confirm("Are you sure you want to restore settings?")) {
+      localStorage.removeItem('save-settings');
+      load_advanced_settings();
+    }
   });
 
-
-  // "Show the dialog" button opens the dialog modally
   showButton.addEventListener("click", () => {
     dialog.showModal();
   });
 
-  // "Close" button closes the dialog
   closeButton.addEventListener("click", () => {
-  dialog.close();
+    dialog.close();
   });
 
 </script>
