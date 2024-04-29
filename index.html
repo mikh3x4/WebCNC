@@ -15,11 +15,12 @@
 
 <body>
     <py-config>
-        packages = ["vpype==1.13.0", "vpype-gcode", "vpype-dxf", "vpype-vectrace", "vpype-occult==0.3.0"]
+        packages = ["vpype==1.13.0", "vpype-gcode", "vpype-dxf", "vpype-vectrace", "vpype-occult==0.3.0", "opencv-python", "matplotlib", "scikit-image"]
         [splashscreen]
             enabled = false
     </py-config>
-    <py-script src="penslicer.py"> </py-script>
+    <py-script src="hatched.py"> </py-script>
+    <py-script src="penslicer.py" output="serialResults"> </py-script>
 
 <div class="container">
   <div class="Send-Command" style="display: flex; align-items: center;">
