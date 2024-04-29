@@ -79,6 +79,8 @@ def calculate_bbox():
             f"G0 X{min(x_pos):.4f} Y{min(y_pos):.4f};\n"
 
 def downloadFile(*args):
+    assert gcode != None
+
     data = gcode
     encoded_data = data.encode('utf-8')
     my_stream = io.BytesIO(encoded_data)

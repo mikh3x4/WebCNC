@@ -22,13 +22,12 @@
             enabled = false
     </py-config>
     <!-- <py-script src="hatched.py"> </py-script> -->
-    <py-script src="penslicer.py"> </py-script>
+    <py-script src="penslicer.py" output="serialResults"> </py-script>
 
 <div class="container">
   <div class="Send-Command" style="display: flex; align-items: center;">
-
-    <input type="text" id="lineToSend" style="flex: 1; ">
-    <button onclick="sendSerialLine()" style="width: 50px; ">Send</button>
+    <input type="text" id="lineToSend" style="flex: 1; margin-left: 1em">
+    <button onclick="sendSerialLine()" style="width: auto; margin-left: 1em;">Send</button>
   </div>
   <div class="Blank"></div>
   <div class="Gcode-History">
@@ -57,6 +56,9 @@
     <h1>
       Gcode Generation
     </h1>
+
+      <div class="Button-Area">
+
     <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
 
     <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button><br>
@@ -67,24 +69,27 @@
 
     <button id="slice-config">Advanced Config</button>
   </div>
+  </div>
+
   <div class="Command-Buttons">
 
       <h1>
       Plotter Control
       </h1>
 
+      <div class="Button-Area">
 <br>
-<button onclick="connectSerial()">Connect</button><br>
+<button onclick="connectSerial()">Connect</button><br><br>
 
 <button onclick="sendData('M17')">Motor On</button>
-<button onclick="sendData('M18')">Motors Off</button><br>
+<button onclick="sendData('M18')">Motors Off</button><br><br>
 
-<button onclick="sendData('G21G91Y-5F1000')">Move Y-</button>
 <button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
 <button onclick="sendData('G21G91X-5F1000')">Move X-</button>
 <button onclick="sendData('G21G91X5F1000')">Move X+</button><br>
+<button onclick="sendData('G21G91Y-5F1000')">Move Y-</button><br><br>
 <button onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
-<button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button><br>
+<button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button><br><br>
 <button onclick="estop_var = true;sendData('!');">ESTOP</button>
 <button onclick="estop_var = false;sendData('~');">Resume</button><br>
 
@@ -92,9 +97,10 @@
 <button onclick="rungcode('gcode_bbox')">Run Outline</button><br>
 
 <button onclick="serialResultsDiv.innerHTML = '';">Clear</button>
-<label for="echoOn">
-    <input type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
+<label hidden for="echoOn">
+    <input hidden type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
 </label>
+  </div>
 
   </div>
 </div>
@@ -134,7 +140,7 @@
   load_advanced_settings = () => {
     if(localStorage.getItem('save-settings') == null){
       console.log("no settings found")
-      document.querySelector("#vpype-pipline-config").value="linemerge --tolerance 0.1mm linesort scaleto {width} {height} layout tight gwrite --profile my_own_plotter output.gcode"
+      document.querySelector("#vpype-pipline-config").value="linemerge --tolerance 0.1mm linesort penwidth 0.1mm scaleto {width} {height} layout tight"
       document.querySelector("#pen-up-command").value="M10 P0 S30"
       document.querySelector("#pen-down-command").value="M10 P0 S100"
 

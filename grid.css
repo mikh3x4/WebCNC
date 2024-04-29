@@ -16,6 +16,22 @@ h1 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.2em;
   margin: 0.4em;
+  font-weight: normal;
+}
+
+button, input::file-selector-button {
+  /* display: inline-block; */
+  outline: 0;
+  border: 2;
+  cursor: pointer;
+  background-color: #4299e1;
+  border-radius: 0.5em;
+  padding: 8px 16px;
+  font-size: 1em;
+  font-weight: bold;
+  color: white;
+  line-height: 1.4em;
+  margin: 1px;
 }
 
 .container {  display: grid;
@@ -71,6 +87,11 @@ h1 {
 
 .Command-Buttons { grid-area: Command-Buttons; }
 
+.Button-Area {
+  padding: 1em;
+  text-align: center;
+}
+
 
 #serialResults {
     font-family: monospace;
@@ -78,7 +99,7 @@ h1 {
     /* height: calc(100% - 120px); */
     height: auto;
     /* width: calc(100% - 20px); */
-    max-height: 40vh;
+    /* max-height: 40vh; */
     border-style: solid;
     overflow: scroll;
     padding: 10px;
