@@ -67,13 +67,13 @@
 <button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
 <button onclick="sendData('G21G91X-5F1000')">Move X-</button>
 <button onclick="sendData('G21G91X5F1000')">Move X+</button><br>
-<button onclick="sendData('M10 P0 S30')">Pen Up</button>
-<button onclick="sendData('M10 P0 S100')">Pen Down</button><br>
+<button onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
+<button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button><br>
 <button onclick="estop_var = true;sendData('!');">ESTOP</button>
 <button onclick="estop_var = false;sendData('~');">Resume</button><br>
 
-<button onclick="rungcode()">Run Gcode</button>
-<button id="move-in-box">Run Outline</button><br>
+<button onclick="rungcode('gcode')">Run Gcode</button>
+<button onclick="rungcode('gcode_bbox')>Run Outline</button><br>
 
 <button onclick="serialResultsDiv.innerHTML = '';">Clear</button>
 <label for="echoOn">

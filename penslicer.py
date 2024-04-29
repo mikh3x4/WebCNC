@@ -53,7 +53,30 @@ from js import Uint8Array, File, URL, document
 import io
 from pyodide.ffi.wrappers import add_event_listener
 
+import re
+
 gcode = None
+gcode_bbox = None
+
+def calculate_bbox():
+    global gcode_bbox
+    assert gcode != None
+
+    # print(re.findall(r"X[0-9.]+[ ;\n]", gcode))
+    # print(re.findall(r"Y[0-9.]+[ ;\n]", gcode))
+
+    x_pos = [ float(m[1:-1]) for m in re.findall(r"X[0-9.]+[ ;\n]", gcode) ]
+    y_pos = [ float(m[1:-1]) for m in re.findall(r"Y[0-9.]+[ ;\n]", gcode) ]
+
+    min_x = min(x_pos)
+    max_x = min(x_pos)
+
+    gcode_bbox = "G90;\nG10 P0 L20 X0 Y0 Z0;\n" + \
+            f"G0 X{min(x_pos):.4f} Y{min(y_pos):.4f};\n" + \
+            f"G0 X{min(x_pos):.4f} Y{max(y_pos):.4f};\n" + \
+            f"G0 X{max(x_pos):.4f} Y{max(y_pos):.4f};\n" + \
+            f"G0 X{max(x_pos):.4f} Y{min(y_pos):.4f};\n" + \
+            f"G0 X{min(x_pos):.4f} Y{min(y_pos):.4f};\n"
 
 def downloadFile(*args):
     data = gcode
@@ -74,6 +97,7 @@ def downloadFile(*args):
 
 async def process_file():
     global gcode
+    print("started processing")
 
     file_input = Element("file-upload")
     uploaded_file = file_input.element.files.item(0)
@@ -90,6 +114,7 @@ async def process_file():
             f.write(gcode)
         dest_elem = js.document.getElementById("output-image")
         dest_elem.innerHTML = gcode.replace("\n", "<br>")
+        calculate_bbox()
         return
 
     if file_type == "jpeg":
@@ -125,6 +150,8 @@ async def process_file():
 
     with open("output.gcode") as f:
         gcode = f.read()
+
+    calculate_bbox()
 
     dest_elem = js.document.getElementById("output-image")
     dest_elem.innerHTML = svg_as_string

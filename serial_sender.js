@@ -14,11 +14,10 @@ eval(variableName + " = x")
 const lineHistory = [];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-async function rungcode() {
+async function rungcode(python_var_name) {
 console.log("running gcode");
 
-
-	var content = pyodideGlobals.get('gcode')
+	var content = pyodideGlobals.get(python_var_name)
 
 	    if (content == null){
 		    alert("No gcode loaded")
@@ -31,7 +30,6 @@ console.log("running gcode");
 	   }
 
 	 var lines = content.split(/\r\n|\n/);
-	    //lines.forEach(function(line) {
 
 	isWaitingForOk = true;
 
