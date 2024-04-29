@@ -30,9 +30,10 @@ import vpype_cli
 
 import js
 def handler(loop, context):
+    js.console.log("hello")
     js.console.error(context.message)
-    print("hello")
     raise(context.exception)
+
 loop.set_exception_handler(handler)
 
 import traceback
@@ -46,11 +47,7 @@ async def wrap(a):
     try:
         return await a
     except Exception as e:
-        print("sad")
         print(e)
-        print(traceback.format_exc())
-        display(str(e), target="serialResults")
-        display(traceback.format_exc(), target="serialResults")
     
 from js import Uint8Array, File, URL, document
 import io
@@ -77,7 +74,7 @@ def downloadFile(*args):
 
 async def process_file():
     global gcode
-    display("sd", target="serialResults")
+
     file_input = Element("file-upload")
     uploaded_file = file_input.element.files.item(0)
     if uploaded_file is None:
@@ -85,7 +82,6 @@ async def process_file():
 
     file_name = uploaded_file.name
 
-    print("2")
     file_type = file_name.split(".")[-1]
 
     if file_type == "gcode":
@@ -95,8 +91,6 @@ async def process_file():
         dest_elem = js.document.getElementById("output-image")
         dest_elem.innerHTML = gcode.replace("\n", "<br>")
         return
-
-    print("1")
 
     if file_type == "jpeg":
         file_type = "jpg"
@@ -116,12 +110,9 @@ async def process_file():
 
     # extra_pipeline = " trim 1 1 "
 
-    print("hi")
-    display("maigc", target="py-terminal")
     cmd = js.document.getElementById("vpype-pipline-config").value
     cmd = cmd.replace("{width}", js.document.getElementById("width_box").value)
     cmd = cmd.replace("{height}", js.document.getElementById("height_box").value)
-    print("hi2")
 
     gcode_cmd = input_cmd + cmd + " gwrite --profile my_own_plotter output.gcode"
     preview_cmd = input_cmd + cmd + " write --pen-up output.svg"
