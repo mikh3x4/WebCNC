@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="grid.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -34,17 +35,28 @@
 
 
 
-    <div class="Banner"></div>
+    <div class="Banner"> 
+    <h1>
+      Serial Console
+    </h1>
+    </div>
 
     <div id="serialResults"></div>
 
   </div>
   <div class="Slicing-Area">
-    <div class="Banner2"></div>
+    <div class="Banner2">
+      <h1>
+      Gcode Preview
+      </h1>
+    </div>
 
     <div id="output-image" style="overflow:scroll;"> </div>
   </div>
   <div class="Slicing-commands">
+    <h1>
+      Gcode Generation
+    </h1>
     <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
 
     <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button><br>
@@ -56,6 +68,10 @@
     <button id="slice-config">Advanced Config</button>
   </div>
   <div class="Command-Buttons">
+
+      <h1>
+      Plotter Control
+      </h1>
 
 <br>
 <button onclick="connectSerial()">Connect</button><br>
@@ -94,13 +110,14 @@
   placeholder
 </textarea>
 
-  <p>Vpype pipeline options</p><br>
+  <div>Vpype pipeline options</div>
   <input type="text" id="vpype-pipline-config" style="width:100%;" value="placeholder">
 
-  <p>Pen Up command</p><br>
+  <div>Pen Up command</div>
   <input type="text" id="pen-up-command" value="placeholder">
+  <br>
 
-  <p>Pen Down command</p><br>
+  <div>Pen Down command</div>
   <input type="text" id="pen-down-command" value="placeholder">
   <br>
 

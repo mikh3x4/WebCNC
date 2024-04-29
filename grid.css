@@ -5,10 +5,17 @@ html, body {
   max-width: 100%;
   overflow-x: hidden;
   /* overfleow-y: hidden; */
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 py-config {
   display: none;
+}
+
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  margin: 0.4em;
 }
 
 .container {  display: grid;
@@ -30,7 +37,7 @@ py-config {
 
 .Gcode-History {  display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 3em 1fr;
+  grid-template-rows: 2em 1fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -44,7 +51,7 @@ py-config {
 
 .Slicing-Area {  display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 3em 1fr;
+  grid-template-rows: 2em 1fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
