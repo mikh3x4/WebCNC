@@ -82,7 +82,7 @@ button, input::file-selector-button {
 
 .Slicing-commands {
   grid-area: Slicing-commands;
-  background-color: yellow;
+  background-color: #CCCCCC;
 
   border: 2px;
     border-style: solid;
@@ -96,6 +96,7 @@ button, input::file-selector-button {
     border-style: solid;
     border-radius: 20px;
     margin: 5px;
+  background-color: #CCCCCC;
   }
 
 #output-image {
