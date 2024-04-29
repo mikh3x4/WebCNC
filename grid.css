@@ -98,6 +98,9 @@ button, input::file-selector-button {
     margin: 5px;
   }
 
+#output-image {
+  padding: 1em;
+}
 .Button-Area {
   padding: 1em;
   text-align: center;
