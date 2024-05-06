@@ -44,7 +44,7 @@ console.log("running gcode");
 
 		console.log("sent");
 		while (!recv_buffer.includes("ok") && !recv_buffer.includes("error")) {
-		    await sleep(10); // Short sleep to prevent blocking
+		    await sleep(1); // Short sleep to prevent blocking
 		    if(estop_var){
 			break;
 		    }

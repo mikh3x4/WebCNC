@@ -78,7 +78,6 @@
       </h1>
 
       <div class="Button-Area">
-<br>
 <button onclick="connectSerial()">Connect</button><br><br>
 
 <button onclick="sendData('M17')">Motor On</button>
@@ -140,7 +139,7 @@
   load_advanced_settings = () => {
     if(localStorage.getItem('save-settings') == null){
       console.log("no settings found")
-      document.querySelector("#vpype-pipline-config").value="linemerge --tolerance 0.1mm linesort penwidth 0.1mm scaleto {width} {height} layout tight"
+      document.querySelector("#vpype-pipline-config").value="linemerge -t 0.1mm linesort penwidth 0.1mm linesimplify -t 0.1mm scaleto {width} {height} layout tight"
       document.querySelector("#pen-up-command").value="M10 P0 S30"
       document.querySelector("#pen-down-command").value="M10 P0 S100"
 
