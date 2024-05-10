@@ -47,7 +47,7 @@
 
         <button id="download-gcode-button" style="margin-top: 3em" py-click="downloadFile()">Download Gcode</button><br>
 
-        <button id="slice-config" style="margin-top: auto">Advanced Config</button>
+        <button id="slice-config" style="margin-top: auto; margin-bottom: 1em">Advanced Config</button>
       </div>
 
     </div>
@@ -70,7 +70,7 @@
 
       <button onclick="connectSerial()">Connect</button><br><br>
 
-      <div>
+      <div class="center-buttons">
         <button onclick="sendData('M17')">Motor On</button>
         <button onclick="sendData('M18')">Motors Off</button><br><br>
       </div>
@@ -82,17 +82,17 @@
         <button onclick="sendData('G21G91Y-5F1000')">Move Y-</button><br><br>
       </div>
 
-      <div>
+      <div class="center-buttons">
         <button onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
         <button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button><br><br>
       </div>
 
-      <div>
+      <div class="center-buttons">
         <button onclick="estop_var = true;sendData('!');">ESTOP</button>
         <button onclick="estop_var = false;sendData('~');">Resume</button><br>
       </div>
 
-      <div>
+      <div class="center-buttons">
         <button onclick="rungcode('gcode')">Run Gcode</button>
         <button onclick="rungcode('gcode_bbox')">Run Outline</button><br>
       </div>
@@ -195,7 +195,7 @@ invert_y = true
 
 </script>
 
-    <py-repl id="my-repl" auto-generate="true"> </py-repl>
+    <py-repl id="my-repl" disabled auto-generate="true"> </py-repl>
 
 </body>
 
