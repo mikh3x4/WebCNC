@@ -29,21 +29,25 @@
     <div class="slicer" style="">
 
       <div class="main-area" style="">
-        <div class="pannel-title"> <h1> Gcode Preview </h1> </div>
+        <h1> Gcode Preview </h1>
         <div id="output-image" style="overflow:scroll;"> </div>
       </div>
 
       <div class="side-pannel" style="">
-        <div class="pannel-title"> <h1> Gcode Generation </h1> </div>
+        <h1> Gcode Generation </h1>
         <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
 
+
+        <div>
+          Width: <input type="text" size="8" id="width_box" value="11cm">
+          Height: <input type="text" size="8" id="height_box" value="7cm"><br>
+        </div>
+
         <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button><br>
-        <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button><br>
 
-        Width: <input type="text" id="width_box" value="11cm"><br>
-        Height: <input type="text" id="height_box" value="7cm"><br>
+        <button id="download-gcode-button" style="margin-top: 3em" py-click="downloadFile()">Download Gcode</button><br>
 
-        <button id="slice-config">Advanced Config</button>
+        <button id="slice-config" style="margin-top: auto">Advanced Config</button>
       </div>
 
     </div>
@@ -52,7 +56,7 @@
 
     <div class="main-area" style="">
 
-      <div class="pannel-title"> <h1> Serial Console </h1> </div>
+      <h1> Serial Console </h1>
       <div id="serialResults"></div>
       <div class="Send-Command" style="display: flex; align-items: center;">
         <input type="text" id="lineToSend" style="flex: 1; margin-left: 1em">
@@ -62,7 +66,7 @@
     </div>
 
     <div class="side-pannel" style="">
-      <div class="pannel-title"> <h1> Plotter Control </h1> </div>
+      <h1> Plotter Control </h1> 
 
       <button onclick="connectSerial()">Connect</button><br><br>
 
@@ -71,7 +75,7 @@
         <button onclick="sendData('M18')">Motors Off</button><br><br>
       </div>
 
-      <div>
+      <div style="text-align: center">
         <button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
         <button onclick="sendData('G21G91X-5F1000')">Move X-</button>
         <button onclick="sendData('G21G91X5F1000')">Move X+</button><br>

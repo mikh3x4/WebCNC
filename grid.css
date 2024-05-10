@@ -17,6 +17,8 @@ h1 {
   font-size: 1.2em;
   margin: 0.4em;
   font-weight: normal;
+
+  align-self: flex-start;
 }
 
 button, input::file-selector-button {
@@ -81,6 +83,7 @@ button, input::file-selector-button {
 
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 }
 
 .main-area {
