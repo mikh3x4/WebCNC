@@ -24,87 +24,86 @@
     <!-- <py-script src="hatched.py"> </py-script> -->
     <py-script src="penslicer.py" output="serialResults"> </py-script>
 
-<div class="container">
-  <div class="Send-Command" style="display: flex; align-items: center;">
-    <input type="text" id="lineToSend" style="flex: 1; margin-left: 1em">
-    <button onclick="sendSerialLine()" style="width: auto; margin-left: 1em;">Send</button>
-  </div>
-  <div class="Blank"></div>
-  <div class="Gcode-History">
+  <div class="container">
 
+    <div class="slicer" style="">
 
+      <div class="main-area" style="">
+        <div class="pannel-title"> <h1> Gcode Preview </h1> </div>
+        <div id="output-image" style="overflow:scroll;"> </div>
+      </div>
 
-    <div class="Banner"> 
-    <h1>
-      Serial Console
-    </h1>
+      <div class="side-pannel" style="">
+        <div class="pannel-title"> <h1> Gcode Generation </h1> </div>
+        <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
+
+        <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button><br>
+        <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button><br>
+
+        Width: <input type="text" id="width_box" value="11cm"><br>
+        Height: <input type="text" id="height_box" value="7cm"><br>
+
+        <button id="slice-config">Advanced Config</button>
+      </div>
+
     </div>
 
-    <div id="serialResults"></div>
+  <div class="gcode-sender" style="">
 
-  </div>
-  <div class="Slicing-Area">
-    <div class="Banner2">
-      <h1>
-      Gcode Preview
-      </h1>
+    <div class="main-area" style="">
+
+      <div class="pannel-title"> <h1> Serial Console </h1> </div>
+      <div id="serialResults"></div>
+      <div class="Send-Command" style="display: flex; align-items: center;">
+        <input type="text" id="lineToSend" style="flex: 1; margin-left: 1em">
+        <button onclick="sendSerialLine()" style="width: auto; margin-left: 1em;">Send</button>
+      </div>
+
     </div>
 
-    <div id="output-image" style="overflow:scroll;"> </div>
-  </div>
-  <div class="Slicing-commands">
-    <h1>
-      Gcode Generation
-    </h1>
+    <div class="side-pannel" style="">
+      <div class="pannel-title"> <h1> Plotter Control </h1> </div>
 
-      <div class="Button-Area">
+      <button onclick="connectSerial()">Connect</button><br><br>
 
-    <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
+      <div>
+        <button onclick="sendData('M17')">Motor On</button>
+        <button onclick="sendData('M18')">Motors Off</button><br><br>
+      </div>
 
-    <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button><br>
-    <button id="download-gcode-button" py-click="downloadFile()">Download Gcode</button><br>
+      <div>
+        <button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
+        <button onclick="sendData('G21G91X-5F1000')">Move X-</button>
+        <button onclick="sendData('G21G91X5F1000')">Move X+</button><br>
+        <button onclick="sendData('G21G91Y-5F1000')">Move Y-</button><br><br>
+      </div>
 
-    Width: <input type="text" id="width_box" value="11cm"><br>
-    Height: <input type="text" id="height_box" value="7cm"><br>
+      <div>
+        <button onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
+        <button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button><br><br>
+      </div>
 
-    <button id="slice-config">Advanced Config</button>
-  </div>
-  </div>
+      <div>
+        <button onclick="estop_var = true;sendData('!');">ESTOP</button>
+        <button onclick="estop_var = false;sendData('~');">Resume</button><br>
+      </div>
 
-  <div class="Command-Buttons">
+      <div>
+        <button onclick="rungcode('gcode')">Run Gcode</button>
+        <button onclick="rungcode('gcode_bbox')">Run Outline</button><br>
+      </div>
 
-      <h1>
-      Plotter Control
-      </h1>
+      <button hidden onclick="serialResultsDiv.innerHTML = '';">Clear</button>
+      <label hidden for="echoOn">
+        <input hidden type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
+      </label>
 
-      <div class="Button-Area">
-<button onclick="connectSerial()">Connect</button><br><br>
-
-<button onclick="sendData('M17')">Motor On</button>
-<button onclick="sendData('M18')">Motors Off</button><br><br>
-
-<button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
-<button onclick="sendData('G21G91X-5F1000')">Move X-</button>
-<button onclick="sendData('G21G91X5F1000')">Move X+</button><br>
-<button onclick="sendData('G21G91Y-5F1000')">Move Y-</button><br><br>
-<button onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
-<button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button><br><br>
-<button onclick="estop_var = true;sendData('!');">ESTOP</button>
-<button onclick="estop_var = false;sendData('~');">Resume</button><br>
-
-<button onclick="rungcode('gcode')">Run Gcode</button>
-<button onclick="rungcode('gcode_bbox')">Run Outline</button><br>
-
-<button onclick="serialResultsDiv.innerHTML = '';">Clear</button>
-<label hidden for="echoOn">
-    <input hidden type="checkbox" id="echoOn" onclick="localStorage.echoOn = this.checked;" checked>echo
-</label>
-  </div>
+    </div>
 
   </div>
+
 </div>
 
-    <py-repl id="my-repl" auto-generate="true"> </py-repl>
 
 <dialog>
   <button autofocus style="float:right;">Close</button> <br>
@@ -191,6 +190,8 @@ invert_y = true
   });
 
 </script>
+
+    <py-repl id="my-repl" auto-generate="true"> </py-repl>
 
 </body>
 

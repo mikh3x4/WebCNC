@@ -34,17 +34,62 @@ button, input::file-selector-button {
   margin: 1px;
 }
 
-.container {  display: grid;
-  grid-template-columns: 1fr max-content;
-  grid-template-rows: 1fr 1fr 3em;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "Slicing-Area Slicing-commands"
-    "Gcode-History Command-Buttons"
-    "Send-Command Blank";
+.container {
+  display: flex;
+  flex-direction: column;
+
   background-color: pink;
   height: 100%;
+  width: 100%;
+}
+
+.slicer {
+  	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: 40vh;
+
+  display: flex;
+  flex-direction: row;
+
+  max-height: 50vh
+}
+
+.gcode-sender {
+  	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: 40vh;
+
+  display: flex;
+  flex-direction: row;
+
+  max-height: 50vh;
+
+}
+
+.side-pannel {
+  	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: auto;
+
+    border: 2px;
+    border-style: solid;
+    border-radius: 20px;
+    margin: 5px;
+    background-color: #CCCCCC;
+
+    padding: 0px 20px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.main-area {
+  	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: auto;
+
+        display: flex;
+        flex-direction: column;
 }
 
 .Send-Command { grid-area: Send-Command; }
@@ -119,5 +164,7 @@ button, input::file-selector-button {
     overflow: scroll;
     padding: 10px;
     margin: 0px;
+
+    flex-grow: 1;
 }
 
