@@ -24,7 +24,7 @@ h1 {
 button, input::file-selector-button {
   /* display: inline-block; */
   outline: 0;
-  border: 2;
+  border: 1;
   cursor: pointer;
   background-color: #4299e1;
   border-radius: 0.5em;
@@ -34,10 +34,15 @@ button, input::file-selector-button {
   color: white;
   line-height: 1.4em;
   margin: 1px;
+
+  border-style: solid;
+  border-color: #555555;
 }
 
 button:disabled, .need_serial{
   background-color: #999999;
+  border-color: #898989;
+  color: #c8c8c8;
 }
 
 .center-buttons{
