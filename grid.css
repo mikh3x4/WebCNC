@@ -46,6 +46,7 @@ button, input::file-selector-button {
 .center-buttons button{
   flex-grow: 1;
   flex-basis: 0;
+  min-width: fit-content;
 }
 
 .container {

@@ -38,7 +38,7 @@
         <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
 
 
-        <div>
+        <div style="margin-bottom: 1em">
           Width: <input type="text" size="8" id="width_box" value="11cm">
           Height: <input type="text" size="8" id="height_box" value="7cm"><br>
         </div>
@@ -68,33 +68,33 @@
     <div class="side-pannel" style="">
       <h1> Plotter Control </h1> 
 
-      <button onclick="connectSerial()">Connect</button><br><br>
+      <button onclick="connectSerial()">Connect</button>
 
       <div class="center-buttons">
-        <button onclick="sendData('M17')">Motor On</button>
-        <button onclick="sendData('M18')">Motors Off</button><br><br>
+        <button onclick="sendData('M17')">Motors On</button>
+        <button onclick="sendData('M18')">Motors Off</button>
       </div>
 
       <div style="text-align: center">
         <button onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
         <button onclick="sendData('G21G91X-5F1000')">Move X-</button>
         <button onclick="sendData('G21G91X5F1000')">Move X+</button><br>
-        <button onclick="sendData('G21G91Y-5F1000')">Move Y-</button><br><br>
+        <button onclick="sendData('G21G91Y-5F1000')">Move Y-</button>
       </div>
 
       <div class="center-buttons">
         <button onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
-        <button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button><br><br>
+        <button onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button>
       </div>
 
       <div class="center-buttons">
         <button onclick="estop_var = true;sendData('!');">ESTOP</button>
-        <button onclick="estop_var = false;sendData('~');">Resume</button><br>
+        <button onclick="estop_var = false;sendData('~');">Resume</button>
       </div>
 
       <div class="center-buttons">
         <button onclick="rungcode('gcode')">Run Gcode</button>
-        <button onclick="rungcode('gcode_bbox')">Run Outline</button><br>
+        <button onclick="rungcode('gcode_bbox')">Run Outline</button>
       </div>
 
       <button hidden onclick="serialResultsDiv.innerHTML = '';">Clear</button>
