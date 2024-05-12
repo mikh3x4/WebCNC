@@ -36,7 +36,9 @@ button, input::file-selector-button {
   margin: 1px;
 }
 
-
+button:disabled, .need_serial{
+  background-color: #999999;
+}
 
 .center-buttons{
   display: flex;
