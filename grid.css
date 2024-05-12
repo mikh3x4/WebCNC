@@ -54,6 +54,7 @@ button, input::file-selector-button {
 
   background-color: pink;
   height: 100%;
+  min-height: 100%;
   width: 100%;
   padding: 0px 10px;
 }
@@ -146,66 +147,10 @@ button, input::file-selector-button {
     border-style: solid;
 }
 
-.Send-Command { grid-area: Send-Command; }
-
-.Blank { grid-area: Blank; }
-
-.Gcode-History {  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 2em 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "Banner"
-    ".";
-  grid-area: Gcode-History;
-  background-color: red;
-}
-
-.Banner { grid-area: Banner; }
-
-.Slicing-Area {  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 2em 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "Banner2"
-    ".";
-  grid-area: Slicing-Area;
-  background-color: green;
-  max-height: 60vh;
-}
-
-.Banner2 { grid-area: Banner2; }
-
-.Slicing-commands {
-  grid-area: Slicing-commands;
-  background-color: #CCCCCC;
-
-  border: 2px;
-    border-style: solid;
-    border-radius: 20px;
-    margin: 5px;
-}
-
-.Command-Buttons { grid-area: Command-Buttons; 
-
-    border: 2px;
-    border-style: solid;
-    border-radius: 20px;
-    margin: 5px;
-  background-color: #CCCCCC;
-  }
 
 #output-image {
   padding: 1em;
 }
-.Button-Area {
-  padding: 1em;
-  text-align: center;
-}
-
 
 #serialResults {
     font-family: monospace;

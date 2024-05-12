@@ -99,7 +99,6 @@ def downloadFile(*args):
 
 async def process_file():
     global gcode
-    print("started processing")
 
     file_input = Element("file-upload")
     uploaded_file = file_input.element.files.item(0)
