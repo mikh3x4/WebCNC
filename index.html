@@ -59,7 +59,7 @@
       <h1> Serial Console </h1>
       <div id="serialResults"></div>
       <div class="Send-Command" style="display: flex; align-items: center;">
-        <input type="text" id="lineToSend" style="flex: 1; margin-left: 1em">
+        <input type="text" id="lineToSend" style="flex: 1; margin-left: 0em">
         <button onclick="sendSerialLine()" style="width: auto; margin-left: 1em;">Send</button>
       </div>
 
@@ -195,7 +195,7 @@ invert_y = true
 
 </script>
 
-    <py-repl id="my-repl" disabled auto-generate="true"> </py-repl>
+    <py-repl id="my-repl" hidden auto-generate="true"> </py-repl>
 
 </body>
 
