@@ -170,3 +170,9 @@ button, input::file-selector-button {
     flex-grow: 1;
 }
 
+
+dialog {
+    border-style: solid;
+    border-radius: 20px;
+}
+

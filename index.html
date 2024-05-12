@@ -38,14 +38,16 @@
         <input type="file" id="file-upload" accept=".svg,.dxf,.png,.gcode" /><br>
 
 
+
         <div style="margin-bottom: 1em">
+          Bounding Box size: <br>
           Width: <input type="text" size="8" id="width_box" value="11cm">
-          Height: <input type="text" size="8" id="height_box" value="7cm"><br>
+          Height: <input type="text" size="8" id="height_box" value="7cm">
         </div>
 
-        <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button><br>
+        <button id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button>
 
-        <button id="download-gcode-button" style="margin-top: 3em" py-click="downloadFile()">Download Gcode</button><br>
+        <button id="download-gcode-button" style="margin-top: 1em" py-click="downloadFile()">Download Generated Gcode</button>
 
         <button id="slice-config" style="margin-top: auto; margin-bottom: 1em">Advanced Config</button>
       </div>
@@ -58,7 +60,7 @@
 
       <h1> Serial Console </h1>
       <div id="serialResults"></div>
-      <div class="Send-Command" style="display: flex; align-items: center;">
+      <div class="Send-Command" style="display: flex; align-items: center; margin-bottom: 3px">
         <input type="text" id="lineToSend" style="flex: 1; margin-left: 0em">
         <button onclick="sendSerialLine()" style="width: auto; margin-left: 1em;">Send</button>
       </div>
@@ -110,7 +112,7 @@
 
 
 <dialog>
-  <button autofocus style="float:right;">Close</button> <br>
+  <button autofocus style="float:right;">X</button> <br>
 
   <label for="story">Vpype gcode config</label> <br>
 
