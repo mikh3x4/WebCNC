@@ -58,6 +58,28 @@ import re
 gcode = None
 gcode_bbox = None
 
+from js import writer
+
+def update_button_disabled_states():
+    for el in js.document.querySelectorAll(".need_python"):
+        el.disabled = False
+
+    serial_avalible = writer is not None
+
+    for el in js.document.querySelectorAll(".need_serial"):
+        el.disabled = not serial_avalible
+
+    gcode_avalible = gcode is not None
+
+    for el in js.document.querySelectorAll(".need_file"):
+        el.disabled = not gcode_avalible
+
+    for el in js.document.querySelectorAll(".need_file_and_serial"):
+        el.disabled = not (serial_avalible and gcode_avalible)
+
+update_button_disabled_states()
+
+
 def calculate_bbox():
     global gcode_bbox
     assert gcode != None
@@ -103,6 +125,7 @@ async def process_file():
     file_input = Element("file-upload")
     uploaded_file = file_input.element.files.item(0)
     if uploaded_file is None:
+        js.alert("Please select a file first")
         return
 
     file_name = uploaded_file.name
@@ -161,3 +184,4 @@ async def process_file():
     dest_elem.children[0].setAttribute("height", "auto")
     dest_elem.children[0].setAttribute("preserveAspectRatio", "xMidYMid meet")
 
+    update_button_disabled_states()

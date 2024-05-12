@@ -93,6 +93,9 @@ try {
     writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
     writer = textEncoder.writable.getWriter();
     await listenToPort();
+
+    pyodideGlobals.get("update_button_disabled_states")()
+
 } catch (e){
     alert("Serial Connection Failed" + e);
 }
