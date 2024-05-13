@@ -183,3 +183,6 @@ dialog {
     border-radius: 20px;
 }
 
+dialog input{
+  margin-bottom: 0.5em;
+}
