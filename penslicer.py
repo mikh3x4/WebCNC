@@ -129,7 +129,7 @@ async def process_file():
         return
 
     js.document.querySelector(".loader").hidden = False
-    asyncio.sleep(0.01)
+    await asyncio.sleep(0.01)
 
     file_name = uploaded_file.name
 
