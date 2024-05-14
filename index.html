@@ -136,6 +136,11 @@
 </dialog>
 
 <script>
+
+  if (navigator.serial === undefined){
+    alert("Your browser doesn't support WebSerial. Recomend using Google Chrome")
+  }
+
   const dialog = document.querySelector("dialog");
   const showButton = document.querySelector("#slice-config");
   const closeButton = document.querySelector("dialog button");
