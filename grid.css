@@ -182,10 +182,15 @@ button:disabled, .need_serial{
 dialog {
     border-style: solid;
     border-radius: 20px;
+    max-height: 90vh;
 }
 
 dialog input{
   margin-bottom: 0.5em;
+}
+
+.py-repl-run-button {
+  display: none;
 }
 
 
