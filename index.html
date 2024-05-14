@@ -49,7 +49,8 @@
 
         <button disabled class="need_file" id="download-gcode-button" style="margin-top: 1em" py-click="downloadFile()">Download Generated Gcode</button>
 
-        <button id="slice-config" style="margin-top: auto; margin-bottom: 1em">Advanced Config</button>
+        <button id="about" style="margin-top: auto; margin-bottom: 1em">About</button>
+        <button id="slice-config" style="margin-top: 0; margin-bottom: 1em">Advanced Config</button>
       </div>
 
     </div>
@@ -141,6 +142,13 @@
 </dialog>
 
 <script>
+
+  document.querySelector("#about").addEventListener("click", () => {
+    window.open(
+        'https://www.notion.so/mikadam/Pen-Plotter-Workshop-60328d1e913344868eddfcd00cc3a36b',
+        '_blank' // <- This is what makes it open in a new window.
+      );
+  });
 
   if (navigator.serial === undefined){
     alert("Your browser doesn't support WebSerial. Recomend using Google Chrome")
