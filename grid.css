@@ -186,3 +186,27 @@ dialog {
 dialog input{
   margin-bottom: 0.5em;
 }
+
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid rgba(0, 0, 0, 0.0);
+  border-bottom: 6px solid rgba(0, 0, 0, 0.0);
+  border-radius: 50%;
+
+  width: 0.5em;
+  height: 0.5em;
+  animation: spin 2s linear infinite;
+
+  position: absolute;
+
+  right: 1em;
+  margin: 0px;
+
+  top: 50%;
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg)  }
+  100% { transform: translateY(-50%) rotate(360deg)  }
+}

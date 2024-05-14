@@ -45,7 +45,7 @@
           Height: <input type="text" size="8" id="height_box" value="7cm">
         </div>
 
-        <button disabled class="need_python" id="process-button" py-click="loop.create_task(wrap(process_file()))">Process File</button>
+        <button disabled class="need_python" id="process-button" style="position:relative;" py-click="loop.create_task(wrap(process_file()))">Process File <p hidden class="loader"></p> </button>
 
         <button disabled class="need_file" id="download-gcode-button" style="margin-top: 1em" py-click="downloadFile()">Download Generated Gcode</button>
 

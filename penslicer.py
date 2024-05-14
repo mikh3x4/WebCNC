@@ -128,6 +128,9 @@ async def process_file():
         js.alert("Please select a file first")
         return
 
+    js.document.querySelector(".loader").hidden = False
+    asyncio.sleep(0.01)
+
     file_name = uploaded_file.name
 
     file_type = file_name.split(".")[-1]
@@ -184,4 +187,5 @@ async def process_file():
     dest_elem.children[0].setAttribute("height", "auto")
     dest_elem.children[0].setAttribute("preserveAspectRatio", "xMidYMid meet")
 
-    update_button_disabled_states()
+    js.document.querySelector(".loader").hidden = True
+
