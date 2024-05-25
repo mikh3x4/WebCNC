@@ -63,7 +63,7 @@
       <div id="serialResults"></div>
       <div class="Send-Command" style="display: flex; align-items: center; margin-bottom: 3px">
         <input type="text" id="lineToSend" style="flex: 1; margin-left: 0em">
-        <button class="need_serial" onclick="sendSerialLine()" style="width: auto; margin-left: 1em;">Send</button>
+        <button disabled class="need_serial" onclick="sendSerialLine()" style="width: auto; margin-left: 1em;">Send</button>
       </div>
 
     </div>
@@ -74,30 +74,30 @@
       <button onclick="connectSerial()">Connect</button>
 
       <div class="center-buttons">
-        <button class="need_serial" onclick="sendData('M17')">Motors On</button>
-        <button class="need_serial" onclick="sendData('M18')">Motors Off</button>
+        <button disabled class="need_serial" onclick="sendData('M17')">Motors On</button>
+        <button disabled class="need_serial" onclick="sendData('M18')">Motors Off</button>
       </div>
 
       <div style="text-align: center">
-        <button class="need_serial" onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
-        <button class="need_serial" onclick="sendData('G21G91X-5F1000')">Move X-</button>
-        <button class="need_serial" onclick="sendData('G21G91X5F1000')">Move X+</button><br>
-        <button class="need_serial" onclick="sendData('G21G91Y-5F1000')">Move Y-</button>
+        <button disabled class="need_serial" onclick="sendData('G21G91Y5F1000')">Move Y+</button><br>
+        <button disabled class="need_serial" onclick="sendData('G21G91X-5F1000')">Move X-</button>
+        <button disabled class="need_serial" onclick="sendData('G21G91X5F1000')">Move X+</button><br>
+        <button disabled class="need_serial" onclick="sendData('G21G91Y-5F1000')">Move Y-</button>
       </div>
 
       <div class="center-buttons">
-        <button class="need_serial" onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
-        <button class="need_serial" onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button>
+        <button disabled class="need_serial" onclick="sendData(document.querySelector('#pen-up-command').value)">Pen Up</button>
+        <button disabled class="need_serial" onclick="sendData(document.querySelector('#pen-down-command').value)">Pen Down</button>
       </div>
 
       <div class="center-buttons">
-        <button class="need_serial" onclick="estop_var = true;sendData('!');">ESTOP</button>
-        <button class="need_serial" onclick="estop_var = false;sendData('~');">Resume</button>
+        <button disabled class="need_serial" onclick="estop_var = true;sendData('!');">ESTOP</button>
+        <button disabled class="need_serial" onclick="estop_var = false;sendData('~');">Resume</button>
       </div>
 
       <div class="center-buttons">
-        <button class="need_file_and_serial" onclick="rungcode('gcode')">Run Gcode</button>
-        <button class="need_file_and_serial" onclick="rungcode('gcode_bbox')">Run Outline</button>
+        <button disabled class="need_file_and_serial" onclick="rungcode('gcode')">Run Gcode</button>
+        <button disabled class="need_file_and_serial" onclick="rungcode('gcode_bbox')">Run Outline</button>
       </div>
 
       <button hidden onclick="serialResultsDiv.innerHTML = '';">Clear</button>
