@@ -192,3 +192,5 @@ async def process_file():
 
     js.document.querySelector(".loader").hidden = True
 
+    update_button_disabled_states()
+
