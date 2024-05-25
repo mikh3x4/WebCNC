@@ -40,7 +40,7 @@ button, input::file-selector-button {
   border-color: #555555;
 }
 
-button:disabled, .need_serial{
+button:disabled{
   background-color: #999999;
   border-color: #898989;
   color: #c8c8c8;

@@ -61,13 +61,16 @@ gcode_bbox = None
 from js import writer
 
 def update_button_disabled_states():
+    from js import writer
+
     for el in js.document.querySelectorAll(".need_python"):
         el.disabled = False
 
     serial_avalible = writer is not None
 
     for el in js.document.querySelectorAll(".need_serial"):
-        el.disabled = not serial_avalible
+        # el.disabled = not serial_avalible
+        el.disabled = False
 
     gcode_avalible = gcode is not None
 
