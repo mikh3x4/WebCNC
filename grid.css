@@ -239,3 +239,22 @@ dialog input{
   0% { transform: translateY(-50%) rotate(0deg)  }
   100% { transform: translateY(-50%) rotate(360deg)  }
 }
+
+.ruler-x {
+  color: var(--ruler-num-c);
+  counter-reset: d 0;
+  display: flex;
+  font-size: var(--ruler-num-fz);
+  height: var(--ruler2-h);
+  inset-block-start: 0;
+  inset-inline-start: calc(var(--ruler-unit) * var(--ruler2-space));
+  line-height: 1;
+  list-style: none;
+  margin: 0;
+  opacity: var(--ruler-x);
+  overflow: hidden;
+  padding: 0;
+  position: fixed;
+  width: 100%;
+}
+
